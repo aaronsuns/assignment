@@ -17,6 +17,7 @@ type Ranges []Range
 // IncludeRange adds a numeric range to the Ranges slice.
 func (ranges *Ranges) IncludeRange(start, end int) {
 	*ranges = append(*ranges, Range{Start: start, End: end})
+
 }
 
 // ExcludeRange removes a numeric range from the Ranges slice.
@@ -55,20 +56,23 @@ func (ranges *Ranges) SortAndMerge() {
 	})
 	DebugPrintf("After Sort: %v", ranges)
 	mergedRanges := Ranges{}
-	currentRange := (*ranges)[0]
-
+	mergedRanges = append(mergedRanges, (*ranges)[0])
+	DebugPrintf("mergedRanges: %v", mergedRanges)
 	for i := 1; i < len(*ranges); i++ {
+		currentRange := &mergedRanges[len(mergedRanges)-1]
+		DebugPrintf("currentRange: %v", currentRange)
 		if currentRange.End >= (*ranges)[i].Start {
 			// Merge the two overlapping ranges.
-			currentRange.End = (*ranges)[i].End
+			if currentRange.End < (*ranges)[i].End {
+				currentRange.End = (*ranges)[i].End
+			}
 		} else {
 			// Ranges don't overlap; add the current range and update it.
-			mergedRanges = append(mergedRanges, currentRange)
-			currentRange = (*ranges)[i]
+			mergedRanges = append(mergedRanges, (*ranges)[i])
 		}
+		DebugPrintf("mergedRanges: %v", mergedRanges)
 	}
-
-	mergedRanges = append(mergedRanges, currentRange)
+	DebugPrintf("After Merge: %v", mergedRanges)
 	*ranges = mergedRanges
 }
 
@@ -85,6 +89,8 @@ func ProcessNumberRanges(includes, excludes []Range) Ranges {
 		}
 		result.IncludeRange(include.Start, include.End)
 	}
+	result.SortAndMerge()
+	DebugPrintf("Result after includes: %v", result)
 
 	for _, exclude := range excludes {
 		if exclude.Start > exclude.End {
@@ -93,6 +99,7 @@ func ProcessNumberRanges(includes, excludes []Range) Ranges {
 		}
 		result.ExcludeRange(exclude.Start, exclude.End)
 	}
+	DebugPrintf("Result after excludes: %v", result)
 
 	result.SortAndMerge()
 	DebugPrintf("Result: %v", result)

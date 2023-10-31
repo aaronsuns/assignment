@@ -127,3 +127,30 @@ func TestExample5(t *testing.T) {
 
 	assert.Equal(t, expected, result)
 }
+
+func TestExample6(t *testing.T) {
+	includeRanges := []Range{
+		{Start: 200, End: 3000},
+		{Start: 10, End: 100},
+		{Start: 150, End: 3001},
+		{Start: 4600, End: 5000},
+		{Start: 20, End: 600},
+	}
+
+	excludeRanges := []Range{
+		{Start: 410, End: 420},
+		{Start: 95, End: 205},
+		{Start: 100, End: 150},
+	}
+
+	result := ProcessNumberRanges(includeRanges, excludeRanges)
+
+	expected := Ranges{
+		{Start: 10, End: 94},
+		{Start: 206, End: 409},
+		{Start: 421, End: 3001},
+		{Start: 4600, End: 5000},
+	}
+
+	assert.Equal(t, expected, result)
+}
