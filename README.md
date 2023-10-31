@@ -2,6 +2,10 @@
 ```
 golangci-lint run --timeout 1m
 ```
+Use just file
+```
+just lint
+```
 
 # Run Unit test
 ```
@@ -12,6 +16,10 @@ go test ./... -run TestExample2
 # Run test with debug print
 DEBUG=1 go test -v ./...
 ``` 
+Use just file
+```
+just testall
+```
 
 # Run the `resolveRange` command line:
 ```
@@ -37,6 +45,12 @@ curl -X POST -H "Content-Type: application/json" --data @input.json http://local
 # OR
 curl -X POST -H "Content-Type: application/json" -d '{"includes":["200-300","10-100","400-500"],"excludes":["410-420","95-205","100-150"]}' http://localhost:8080/process
 ```
+
+# To build the `resolveRange` and `restAPI`
+```
+just build
+```
+The binary end up in bin/
 
 
 # Explanation of ExcludeRange in numrange.go
