@@ -1,12 +1,12 @@
 # Project stucture:
- - `pkg` contain the module that solve the number range assignment, the main logic is in `numrange/numrange.go`.
-There are a number of unit test in `numrange/numrange_test.go` to verify the range processing algorithm.
- - `cmd/resolveRange` - command line application that could take range list as input and output the processed result by using `numrange.ProcessNumberRanges`, example described below 
- - `cmd/restAPI` - a tiny web service that could be used to interact with range processing algorithm, example described below.
- - `Justfile` - make it easier to run build/test/lint
- - `.github/workflows/go.yml` - CI control file for github Actions
- - `bin/` - place to store build artifacts.
- - `.golangci.yml` - lint rules
+ - [pkg](pkg) contain the module that solve the number range assignment, the main logic is in [pkg/numrange/numrange.go](pkg/numrange/numrange.go).
+There are a number of unit test in [pkg/numrange/numrange_test.go](pkg/numrange/numrange_test.go) to verify the range processing algorithm.
+ - [cmd/resolveRange](/cmd/resolveRange) - command line application that could take range list as input and output the processed result by using `numrange.ProcessNumberRanges`, example described below 
+ - [cmd/restAPI](cmd/restAPI) - a tiny web service that could be used to interact with range processing algorithm, example described below.
+ - [Justfile](/Justfile) - make it easier to run build/test/lint
+ - [.github/workflows/go.yml](/.github/workflows/go.yml) - CI control file for github Actions
+ - [bin/](/bin) - place to store build artifacts.
+ - [.golangci.yml](/.golangci.yml) - lint rules
 
 # To run it
 This start a restapi server that could process the ranges:
