@@ -1,0 +1,50 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build
+      run: |
+        mkdir -p bin
+        go build -o bin/resolveRange cmd/resolveRange/resolveRange.go
+        go build -o bin/restAPI cmd/restAPI/restAPI.go
+        ls -l bin
+
+#     - name: Lint
+#       run: golangci-lint run --timeout 1m
+
+    - name: Test
+      run: go test -v ./...
+    
+    - name: Archive Build Output
+      uses: actions/upload-artifact@v3
+      with:
+        name: bin
+        path: bin    
+
+#   archive-build-artifacts:
+#       runs-on: ubuntu-latest
+#       steps:
+#       - name: Archive Build Output
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: bin
+#           path: bin
