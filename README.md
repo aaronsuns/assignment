@@ -1,6 +1,6 @@
 # Project stucture:
- - `pkg` contain the module that solve the number range assignment, the main logic is in numrange/numrange.go.
-There are a number of unit test in numrange/numrange_test.go to verify the range processing algorithm.
+ - `pkg` contain the module that solve the number range assignment, the main logic is in `numrange/numrange.go`.
+There are a number of unit test in `numrange/numrange_test.go` to verify the range processing algorithm.
  - `cmd/resolveRange` - command line application that could take range list as input and output the processed result by using `numrange.ProcessNumberRanges`, example described below 
  - `cmd/restAPI` - a tiny web service that could be used to interact with range processing algorithm, example described below.
  - `Justfile` - make it easier to run build/test/lint
@@ -60,7 +60,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"includes":["200-300","10-
 ```
 just build
 ```
-The binary end up in bin/
+The binary end up in `bin/`
 
 
 # Explanation of ExcludeRange in numrange.go
