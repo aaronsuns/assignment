@@ -104,3 +104,10 @@ Case 4 (Right overlap):
       IIIIIIIIIIIIII
 XXXXXXXXX 
 ```
+
+
+# Big O notation analysis
+- ExcludeRange - O(n) because it needs to iterate through all 'n' ranges
+- sortAndMergeRanges - sort.Slice sorting operation time complexity is O(n*log(n)) according to https://go.dev/src/sort/sort.go,  the merge operation need to iterate sorted ranges, the time complexity is O(n).
+- ProcessNumberRanges - O(n*log(n)) because use of sortAndMergeRanges
+So the overall time complexity is O(n*log(n)), where n is the total numer of ranges in the input.
