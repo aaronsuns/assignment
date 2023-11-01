@@ -1,13 +1,23 @@
-#Run lint
+# Project stucture:
+ - `pkg` contain the module that solve the number range assignment, the main logic is in numrange/numrange.go.
+There are a number of unit test in numrange/numrange_test.go to verify the range processing algorithm.
+ - `cmd/resolveRange` - command line application that could take range list as input and output the processed result by using `numrange.ProcessNumberRanges`, example described below 
+ - `cmd/restAPI` - a tiny web service that could be used to interact with range processing algorithm, example described below.
+ - `Justfile` - make it easier to run build/test/lint
+ - `.github/workflows/go.yml` - CI control file for github Actions
+ - `bin/` - place to store build artifacts.
+ - `.golangci.yml` - lint rules
+
+# Run lint
 ```
 golangci-lint run --timeout 1m
 ```
-Use just file
+Or use just file
 ```
 just lint
 ```
 
-# Run Unit test
+# Run unit test
 ```
 # Run all test
 go test  ./...
@@ -16,7 +26,7 @@ go test ./... -run TestExample2
 # Run test with debug print
 DEBUG=1 go test -v ./...
 ``` 
-Use just file
+Or use just file
 ```
 just testall
 ```
@@ -54,7 +64,7 @@ The binary end up in bin/
 
 
 # Explanation of ExcludeRange in numrange.go
-(Due to go lint does not like those in the code comment, so put the explanation here)
+(Due to go lint does not like those lines in the code comment, so put the explanation here)
 There are 4 cases when handling exclude ranges, 
 I - Includes
 X - Excludes
