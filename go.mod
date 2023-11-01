@@ -2,10 +2,7 @@ module github.com/aaronsuns/assignment
 
 go 1.20
 
-require (
-	github.com/gorilla/mux v1.8.0
-	github.com/stretchr/testify v1.8.4
-)
+require github.com/stretchr/testify v1.8.4
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

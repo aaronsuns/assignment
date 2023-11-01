@@ -8,6 +8,16 @@ There are a number of unit test in `numrange/numrange_test.go` to verify the ran
  - `bin/` - place to store build artifacts.
  - `.golangci.yml` - lint rules
 
+# To run it
+This start a restapi server that could process the ranges:
+```
+docker run -p 8080:8080 ghcr.io/aaronsuns/assignment/restapi:latest
+```
+Test with:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"includes":["200-600","10-100","400-500"],"excludes":["410-420","95-205","100-150"]}' http://localhost:8080/process
+```
+
 # Run lint
 ```
 golangci-lint run --timeout 1m
@@ -61,6 +71,18 @@ curl -X POST -H "Content-Type: application/json" -d '{"includes":["200-300","10-
 just build
 ```
 The binary end up in `bin/`
+
+build `restAPI` with docker
+```
+docker build -t restapi .
+```
+Publish to github
+```
+docker tag restapi ghcr.io/aaronsuns/assignment/restapi:latest
+export CR_PAT=<replace with your github token>
+echo $CR_PAT | docker login ghcr.io -u <username> --password-stdin
+docker push ghcr.io/aaronsuns/assignment/restapi:latest
+```
 
 
 # Explanation of ExcludeRange in numrange.go
