@@ -17,7 +17,6 @@ type Ranges []Range
 // IncludeRange adds a numeric range to the Ranges slice.
 func (ranges *Ranges) IncludeRange(start, end int) {
 	*ranges = append(*ranges, Range{Start: start, End: end})
-
 }
 
 // ExcludeRange removes a numeric range from the Ranges slice.
@@ -49,31 +48,34 @@ func (ranges *Ranges) ExcludeRange(start, end int) {
 	*ranges = newRanges
 }
 
-// SortAndMerge sorts the ranges and merges any overlapping ranges.
-func (ranges *Ranges) SortAndMerge() {
-	sort.Slice(*ranges, func(i, j int) bool {
-		return (*ranges)[i].Start < (*ranges)[j].Start
+func sortAndMergeRanges(ranges []Range) []Range {
+	if len(ranges) == 0 {
+		return ranges
+	}
+
+	sort.Slice(ranges, func(i, j int) bool {
+		return ranges[i].Start < ranges[j].Start
 	})
-	DebugPrintf("After Sort: %v", ranges)
-	mergedRanges := Ranges{}
-	mergedRanges = append(mergedRanges, (*ranges)[0])
-	DebugPrintf("mergedRanges: %v", mergedRanges)
-	for i := 1; i < len(*ranges); i++ {
+
+	mergedRanges := []Range{ranges[0]}
+
+	for i := 1; i < len(ranges); i++ {
 		currentRange := &mergedRanges[len(mergedRanges)-1]
-		DebugPrintf("currentRange: %v", currentRange)
-		if currentRange.End >= (*ranges)[i].Start {
-			// Merge the two overlapping ranges.
-			if currentRange.End < (*ranges)[i].End {
-				currentRange.End = (*ranges)[i].End
+		if currentRange.End >= ranges[i].Start {
+			if currentRange.End < ranges[i].End {
+				currentRange.End = ranges[i].End
 			}
 		} else {
-			// Ranges don't overlap; add the current range and update it.
-			mergedRanges = append(mergedRanges, (*ranges)[i])
+			mergedRanges = append(mergedRanges, ranges[i])
 		}
-		DebugPrintf("mergedRanges: %v", mergedRanges)
 	}
-	DebugPrintf("After Merge: %v", mergedRanges)
-	*ranges = mergedRanges
+
+	return mergedRanges
+}
+
+// SortAndMerge sorts the ranges and merges any overlapping ranges.
+func (ranges *Ranges) SortAndMerge() {
+	*ranges = sortAndMergeRanges(*ranges)
 }
 
 func printInvalidRange(rangeType string, start, end int) {
@@ -90,9 +92,12 @@ func ProcessNumberRanges(includes, excludes []Range) Ranges {
 		result.IncludeRange(include.Start, include.End)
 	}
 	result.SortAndMerge()
-	DebugPrintf("Result after includes: %v", result)
+	DebugPrintf("includes before/after SortAndMerge: %v , %v", includes, result)
 
-	for _, exclude := range excludes {
+	excludesSortAndMerged := sortAndMergeRanges(excludes)
+	DebugPrintf("excludes before/after SortAndMerge: %v , %v", excludes, excludesSortAndMerged)
+
+	for _, exclude := range excludesSortAndMerged {
 		if exclude.Start > exclude.End {
 			printInvalidRange("exclude", exclude.Start, exclude.End)
 			continue
